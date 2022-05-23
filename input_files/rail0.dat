@@ -1,0 +1,8 @@
+LagoonSouth	LagoonWest	6
+LagoonWest	LagoonSouth	7
+LagoonSouth	LagoonEast	8
+LagoonEast	LagoonSouth	9
+LagoonNorth	LagoonWest	15
+LagoonWest	LagoonNorth	14
+LagoonNorth	LagoonEast	17
+LagoonEast	LagoonNorth	16

@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g -Wl,--enable-auto-import CMakeFiles/HW2RES.dir/main.cpp.o CMakeFiles/HW2RES.dir/Configuration.cpp.o CMakeFiles/HW2RES.dir/User_Interaction.cpp.o CMakeFiles/HW2RES.dir/Neverland.cpp.o CMakeFiles/HW2RES.dir/Validation.cpp.o CMakeFiles/HW2RES.dir/exceptions.cpp.o -o HW2RES.exe -Wl,--out-implib,libHW2RES.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
