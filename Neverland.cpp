@@ -157,18 +157,21 @@ void  Neverland::print_stations(){
  */
 void Neverland::uniExpress(const string& from, const string& to){
     if(stations.find(from) == stations.end() || stations.find(to) == stations.end()){
-        throw NodeNotExistException(from);    }
+        throw NodeNotExistException(from);
+    }
     for(auto& v: transport){
-        cout << v.first << " : ";
-        map<string, pair<int, bool>> res = dijkstra(*transport[v.first].get(), from, config[v.first]);
-        if(res.find(to) != res.end()){
-            cout << from << "--> " << to << " = " << res[to].first - config[v.first] << endl;
+        try {
+            cout << v.first << " : ";
+            map<string, pair<int, bool>> res = dijkstra(*transport[v.first].get(), from, config[v.first]);
+            if (res.find(to) != res.end()) {
+                cout << from << "--> " << to << " = " << res[to].first - config[v.first] << endl;
+            } else {
+                cout << "route unavailable" << endl;
+            }
         }
-        else{
+        catch(NodeNotExistException &e){
             cout << "route unavailable" << endl;
         }
-
-
     }
 
 }
