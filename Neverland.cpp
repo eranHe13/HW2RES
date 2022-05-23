@@ -133,8 +133,6 @@ void Neverland:: set_station(const string& s1 , const string& s2 ){
     stations.insert(s2);
 }
 
-
-
 void  Neverland::print_stations(){
     cout << "STATIONS : \n";
     for(const auto& s:stations){
@@ -142,29 +140,22 @@ void  Neverland::print_stations(){
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 /**
  * calculate for each vehicle the shortest path
  */
 void Neverland::uniExpress(const string& from, const string& to){
-    if(stations.find(from) == stations.end() || stations.find(to) == stations.end()){
+    if(stations.find(from) == stations.end()){
         throw NodeNotExistException(from);
+    }
+    if(stations.find(to) == stations.end()){
+        throw NodeNotExistException(to);
     }
     for(auto& v: transport){
         try {
             cout << v.first << " : ";
             map<string, pair<int, bool>> res = dijkstra(*transport[v.first].get(), from, config[v.first]);
             if (res.find(to) != res.end()) {
-                cout << from << "--> " << to << " = " << res[to].first - config[v.first] << endl;
+                cout << from << " --> " << to << " = " << res[to].first - config[v.first] << endl;
             } else {
                 cout << "route unavailable" << endl;
             }
@@ -205,7 +196,6 @@ map<string, pair<int, bool>> Neverland::dijkstra(Graph<string, int>& G, const st
     for(const auto& v: vertices){
         string lowest = get_lowest(vertices);
         try{
-//            vector<pair<string, int>>& lowest_node = G[lowest];
             for(const auto& u: G[lowest]){
                 if(vertices[u.first].second == true) continue;
                 else if(vertices[u.first].first == -1){
@@ -220,8 +210,6 @@ map<string, pair<int, bool>> Neverland::dijkstra(Graph<string, int>& G, const st
             }
         }
         catch(DeadEndNodeException& e){
-//            vertices[lowest].second = true;
-//            continue;
         }
         vertices[lowest].second = true;
     }
