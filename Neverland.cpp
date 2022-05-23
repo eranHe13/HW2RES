@@ -167,11 +167,6 @@ void Neverland::uniExpress(const string& from, const string& to){
 
 }
 
-/**
- * get the lowest element in the map
- * @param vertices
- * @return
- */
 string get_lowest(map<string, pair<int, bool>> &vertices){
     string s = vertices.begin()->first;
     int n = -1;
@@ -185,11 +180,7 @@ string get_lowest(map<string, pair<int, bool>> &vertices){
     return s;
 }
 
-/**
- * implementing the dijkstra algorithm to the graph
- * @param G
- * @param source
- */
+
 map<string, pair<int, bool>> Neverland::dijkstra(Graph<string, int>& G, const string& source, const int& halt_time){
     map<string, pair<int, bool>> vertices = create_dijkstra_map(G);
     vertices[source].first = 0;
