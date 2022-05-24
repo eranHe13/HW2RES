@@ -76,10 +76,11 @@ void get_input(){
     /// Interaction with user -- simulation control
     string input;
     cout << "LEST BEGIN:" << endl;
-    while(true){
+    while(input != "exit" ||input != "EXIT"){
         vector<string> details;
         input= "";
         getline(cin , input);
+       // if (cin.get() == '\n' || input == "\n" ) {continue;}
         stringstream s(input);
         istream_iterator<std::string> begin(s);
         istream_iterator<std::string> end;
@@ -103,8 +104,6 @@ void get_input(){
                         throw NeverlandException("ERROR : need to stations \n");
                     }
                     N.uniExpress( data[1] , data[2]);
-                    cout << "Eran \n";
-                    N.A(data[1] , data[2]);
 
             } else if (data[0] == "multiExpress") {
                 /// get the shortest route between two stations -- with vehicle replacement
@@ -116,9 +115,6 @@ void get_input(){
             }
             else if (data[0] == "print") {
                 cout << N;
-                cout << endl;
-                N.print_stations();
-                N.print_configuration();
             }
             else if(data[0] == "EXIT" || data[0] == "exit"){
                 break;

@@ -46,7 +46,6 @@ public:
     void uniExpress(const string& from, const string& to);
     map<string, pair<int, bool>> dijkstra(Graph<string, int>& G, const string& source, const int& halt_time);
     map<string, pair<int, bool>> create_dijkstra_map(const Graph<string, int>& G);
-    void A(const string& from, const string& to);
     };
 
 #endif

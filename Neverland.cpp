@@ -42,7 +42,6 @@ void Neverland::update_config(string& file_name) {
     while(my_file >> type){
         my_file >> time;
         config[type] = stoi(time);
-        cout << type << " " << config[type] << endl;
     }
     my_file.close();
 
@@ -134,16 +133,17 @@ void Neverland:: set_multigraph(const string& source ,const string& destination 
                         if(transit_time + route[from.first].first + to.second < route[to.first].first - config[route[from.first].second]){
                             route[to.first].first = transit_time + route[from.first].first + to.second;
                             route[to.first].second = v.first;
-
                         }
-
+                    }
+                    else{
+                        route[to.first].first = min(route[to.first].first , route[from.first].first + to.second + config[v.first]);
                     }
                 }
 
-                    else{ //// if is the same vehicle as the last way
-                        route[to.first].first = min(route[to.first].first , route[from.first].first + to.second + config[v.first]);
-
-                    }
+                else
+                { //// if is the same vehicle as the last way
+                    route[to.first].first = min(route[to.first].first , route[from.first].first + to.second );
+                }
 
         }}}
 
