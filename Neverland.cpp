@@ -98,34 +98,60 @@ void Neverland::set_outputfile(string filename) {
 
 
 
-
-
-
-
-
 void Neverland:: set_multigraph(const string& source ,const string& destination  ){
-    /// TODO --- SET MAP : KEYS = STATIONS , VALUE = VECTOR[4](VEHICLES)
-    /// MAP
-    ///STATION -> (BUS  , { (STATION , DIST)  }   )
-    ///        -> (RAIL  , { (STATION , DIST)  }   )
-    ///        -> (SPRINTER  , { (STATION , DIST)  }   )
-    ///        -> (TRAM  , { (STATION , DIST)  }   )
     map < string , Graph<string , int> > multigraph;
-    for(const auto &vehicle : transport){
-        for(const auto& graph: vehicle.second->graph){
-            for(const auto& vec: graph.second){
-                multigraph[graph.first].add_node(vehicle.first, vec.first, vec.second);
+    for(const auto& s: stations){ //station
+        multigraph[s] = {};
+        for(const auto& v: transport) { // each vehicle
+            for(const auto& n_s : v.second->graph[s]){ // each station in the vehicle
+                multigraph[s].add_node(v.first, n_s.first, n_s.second);
             }
         }
     }
-    for(const auto& h: multigraph){
 
-        cout<< h.first<< endl << h.second << endl;
+    map < string , pair< int , string> >  route;  /// map  < station , {route time from source ,   vehicle  }>
+    map<string , string> vehicle_type;
+    for(const auto& s : multigraph){
+        route[s.first].first = MAX; /// set high distance on all stations
+        route[s.first].second = "non"; /// set null from
     }
+    route[source].first =  0;
+    route[source].second = "source";
+    for(const auto& from: multigraph){ /// foreach stations
+        for(const auto& v:from.second.graph){ /// foreach vehicle
+            for(const auto& to:v.second){/// foreach neighborhood of station from in each vehicle
+                if(to.first == source) continue;
+                if(route[to.first].second == "non"){ /// if not visited yet
+                    route[to.first].second = v.first; /// put curr vehicle
+                }
+                if(route[from.first].first != MAX){ /// if there is a route from --> to
+                    if(route[to.first].second != v.first) {//// if there switch on the vehicles need to add transit time
+                        int transit_time = 0;
+                        if(from.first.substr(0 ,1) == "IC") {transit_time = config["intercity"];}
+                        else if(from.first.substr(0 ,1) == "CS") {transit_time = config["central"];}
+                        else {transit_time = config["stad"];}
 
+                        if(transit_time + route[from.first].first + to.second < route[to.first].first - config[route[from.first].second]){
+                            route[to.first].first = transit_time + route[from.first].first + to.second;
+                            route[to.first].second = v.first;
 
+                        }
 
+                    }
+                }
 
+                    else{ //// if is the same vehicle as the last way
+                        route[to.first].first = min(route[to.first].first , route[from.first].first + to.second + config[v.first]);
+
+                    }
+
+        }}}
+
+    if(route[destination].first == MAX) { // not found route
+        cout << "route unavailable" << endl;
+        return;
+    }
+    cout << source  <<" --> "<< destination << " = " << route[destination].first <<endl;
 }
 
 void Neverland:: set_station(const string& s1 , const string& s2 ){
