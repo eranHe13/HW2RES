@@ -110,7 +110,7 @@ void get_input(){
                 if(data.size() != 3){
                     throw NeverlandException("ERROR : need to stations \n");
                 }
-                N.set_multigraph(data[1] , data[2]);
+                N.multiExpress(data[1] , data[2]);
                 ///TODO - multiExpress
             }
             else if (data[0] == "print") {

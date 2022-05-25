@@ -40,12 +40,17 @@ public:
     void BFS(const string& type ,const string& station  , map< string,bool>& reachables );
     void inbound_outbound(const string& station ,const string& func);
     void set_outputfile(string filename);
-    void set_multigraph(const string& source ,const string& destination  );
+    void multiExpress(const string& source ,const string& destination  );
     void set_station(const string& s1 , const string& s2  );
     void print_stations();
     void uniExpress(const string& from, const string& to);
     map<string, pair<int, bool>> dijkstra(Graph<string, int>& G, const string& source, const int& halt_time);
     map<string, pair<int, bool>> create_dijkstra_map(const Graph<string, int>& G);
+    void get_transit_time(const string& from , int& transit_time) ;
+    void set_multigraph(map < string , Graph<string , int> >& multigraph) ;
+
+
+
     };
 
 #endif
