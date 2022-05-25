@@ -9,8 +9,8 @@
 using namespace std;
 struct Configuration {
     map<string , int> c ={{"bus" , 1},{"tram", 2}, {"sprinter" ,  3},
-                          { "rail", 1 }, { "intercity", 15 },
-                          { "central", 10 },{ "stad", 5 }};
+                          { "rail", 1 }, { "intercity", 10 },
+                          { "central", 15 },{ "stad", 5 }};
 
     const int& operator[] (const string& key) const {
         return c.at(key);
