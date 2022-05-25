@@ -29,9 +29,9 @@ private:
     map<string, shared_ptr<Graph<string , int>>> transport;
     map<string, Graph<string , int>> o_transport;
     Configuration config;
-    string outputfile_name;
     set<string> stations;
 public:
+    string outputfile_name;
     Neverland();
     void add_route(const string& from, const string& to, unsigned int time, const string& type);
     void update_config(string& file_name);
@@ -50,7 +50,7 @@ public:
     void set_multigraph(map < string , Graph<string , int> >& multigraph) ;
 
 
-
-    };
+    void print_to_file();
+};
 
 #endif

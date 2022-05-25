@@ -7,7 +7,9 @@
 
 const int MAX = 1000000;
 
-
+/**
+ * init the transport
+ */
 Neverland:: Neverland(): outputfile_name("output.dat"){
     transport.insert({"bus", nullptr});
     transport.insert({"rail", nullptr});
@@ -15,6 +17,10 @@ Neverland:: Neverland(): outputfile_name("output.dat"){
     transport.insert({"sprinter", nullptr});
 }
 
+
+/**
+ * add rout on the graph
+ */
 void Neverland:: add_route(const string& from, const string& to, unsigned int time, const string& type){
     if(transport[type] == nullptr){
         transport[type] = std::make_shared<Graph<string, int>>();
@@ -30,6 +36,11 @@ ostream& operator<<(ostream& os, const Neverland& N){
     return os;
 }
 
+
+/**
+ * updating the config object
+ * @param file_name
+ */
 void Neverland::update_config(string& file_name) {
     ifstream my_file(file_name);             /// OPEN FILE
     if(!my_file){
@@ -47,6 +58,10 @@ void Neverland::update_config(string& file_name) {
 
 }
 
+
+/**
+ * print the configuration obgect
+ */
 void Neverland::print_configuration(){
     for(const auto& k : config.c){
         cout <<  k.first << " " << k.second << endl;
@@ -62,6 +77,12 @@ void Neverland:: BFS(const string& type ,const string& station  , map< string,bo
   }
 }
 
+
+/**
+ * calculating the inbound_outbound stations of station
+ * @param station
+ * @param func
+ */
 void Neverland::inbound_outbound(const string& station ,const string& func){
     if(func == "inbound"){ // MAKING OPPOSITE MAP OF TRANSPORTS
         for(auto &v: transport){ // loop on vehicles
@@ -108,7 +129,11 @@ void Neverland::set_multigraph(map < string , Graph<string , int> >& multigraph)
     }
 }
 
-
+/**
+ * get the transit time of some station
+ * @param from
+ * @param transit_time
+ */
 void Neverland::get_transit_time(const string& from , int& transit_time) {
     if(from.substr(0 ,2) == "IC") {transit_time = config["intercity"];}
     else if(from.substr(0 ,2) == "CS") {transit_time = config["central"];}
@@ -116,8 +141,12 @@ void Neverland::get_transit_time(const string& from , int& transit_time) {
 }
 
 
-
-
+/**
+ * get the shortest path between source and destination
+ * with any vehicle
+ * @param source
+ * @param destination
+ */
 void Neverland:: multiExpress(const string& source ,const string& destination  ){
     map < string , Graph<string , int> > multigraph;
     set_multigraph(multigraph);
@@ -160,11 +189,20 @@ void Neverland:: multiExpress(const string& source ,const string& destination  )
     cout << source  <<" --> "<< destination << " = " << route[destination].first   <<endl;
 }
 
+
+/**
+ * set station for source and destination
+ * @param s1
+ * @param s2
+ */
 void Neverland:: set_station(const string& s1 , const string& s2 ){
     stations.insert(s1);
     stations.insert(s2);
 }
 
+/**
+ * print the stations set
+ */
 void  Neverland::print_stations(){
     cout << "STATIONS : \n";
     for(const auto& s:stations){
@@ -199,6 +237,12 @@ void Neverland::uniExpress(const string& from, const string& to){
 
 }
 
+
+/**
+ * get the lowest vertices in the graph
+ * @param vertices
+ * @return
+ */
 string get_lowest(map<string, pair<int, bool>> &vertices){
     string s = vertices.begin()->first;
     int n = -1;
@@ -213,6 +257,14 @@ string get_lowest(map<string, pair<int, bool>> &vertices){
 }
 
 
+/**
+ * implementing the dijkstra algorithm for calculating the shortest path from source
+ * including the halt time for every vehicle
+ * @param G
+ * @param source
+ * @param halt_time
+ * @return
+ */
 map<string, pair<int, bool>> Neverland::dijkstra(Graph<string, int>& G, const string& source, const int& halt_time){
     map<string, pair<int, bool>> vertices = create_dijkstra_map(G);
     vertices[source].first = 0;
@@ -254,11 +306,6 @@ map<string, pair<int, bool>> Neverland::create_dijkstra_map(const Graph<string, 
     }
     return short_graph;
 }
-
-
-
-
-
 
 
 

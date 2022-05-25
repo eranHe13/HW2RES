@@ -14,5 +14,6 @@
 void initializing(int size, const char** files);
 void get_input();
 void set_pNeverland(string file_name);
+void print_to_file(const string& out_file);
 
 #endif

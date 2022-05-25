@@ -66,7 +66,7 @@ void initializing(int size, const char** files){
             }
         }
     }
-    catch(NeverlandException& e) { ///////ERROR ON INIT THE PROGRAM , EXIT -- TODO CHECK IF NEED TO DELETE N
+    catch(NeverlandException& e) { ///////ERROR ON INIT THE PROGRAM , EXIT
         cout << e.what();
         exit(0);
     }
@@ -80,11 +80,15 @@ void get_input(){
         vector<string> details;
         input= "";
         getline(cin , input);
-       // if (cin.get() == '\n' || input == "\n" ) {continue;}
+        if(input.empty()) {
+            cout << "command not found" << endl;
+            continue;
+        }
         stringstream s(input);
         istream_iterator<std::string> begin(s);
         istream_iterator<std::string> end;
         vector<std::string> data(begin, end);
+
         try {
             if (data[0] == "load") {
                 /// load details file from user
@@ -114,7 +118,7 @@ void get_input(){
                 ///TODO - multiExpress
             }
             else if (data[0] == "print") {
-                cout << N;
+                print_to_file(N.outputfile_name);
             }
             else if(data[0] == "EXIT" || data[0] == "exit"){
                 break;
@@ -130,4 +134,13 @@ void get_input(){
     }
 }
 
-
+void print_to_file(const string& out_file){
+    ofstream myfile(out_file);
+    if (myfile.is_open())
+    {
+        myfile << N;
+    }
+    else {
+        cerr << "NO" << endl;
+    }
+}
