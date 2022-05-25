@@ -139,8 +139,8 @@ void print_to_file(const string& out_file){
     if (myfile.is_open())
     {
         myfile << N;
-    }
-    else {
-        cerr << "NO" << endl;
+        cout << "printed to " << out_file << endl;
+    } else{
+        throw NeverlandException("File cannot be opened");
     }
 }

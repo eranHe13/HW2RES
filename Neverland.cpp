@@ -30,8 +30,8 @@ void Neverland:: add_route(const string& from, const string& to, unsigned int ti
 
 ostream& operator<<(ostream& os, const Neverland& N){
     for(const auto& m : N.transport){
-        if(m.second != nullptr) {
-            os << m.first << "\n" << *(m.second.get()) ;
+        if(m.second) {
+            os << m.first << "\n" << *(m.second) ;
         }}
     return os;
 }
@@ -93,10 +93,14 @@ void Neverland::inbound_outbound(const string& station ,const string& func){
             }
         }
     }
+    cout << "here1" << endl;
     map< string,bool> is_visited1;
     for(const auto &t : transport){ // loop on vehicles
-        BFS(t.first , station , is_visited1  );
         cout << t.first  << ": " ;
+
+        if(transport[t.first]){
+            BFS(t.first , station , is_visited1  );
+        }
         if(!is_visited1.empty()){
             for(const auto& s : is_visited1){
                 if(s.first != station){
@@ -108,8 +112,10 @@ void Neverland::inbound_outbound(const string& station ,const string& func){
         cout << endl;
         is_visited1.clear();
     }
+
     if(func == "inbound"){
-        o_transport.clear();}
+        o_transport.clear();
+    }
 }
 
 void Neverland::set_outputfile(string filename) {
@@ -221,8 +227,9 @@ void Neverland::uniExpress(const string& from, const string& to){
         throw NodeNotExistException(to);
     }
     for(auto& v: transport){
+        cout << v.first << " : ";
         try {
-            cout << v.first << " : ";
+            if(!transport[v.first]) throw NodeNotExistException("");
             map<string, pair<int, bool>> res = dijkstra(*transport[v.first].get(), from, config[v.first]);
             if (res.find(to) != res.end()) {
                 cout << from << " --> " << to << " = " << res[to].first - config[v.first] << endl;
@@ -230,7 +237,7 @@ void Neverland::uniExpress(const string& from, const string& to){
                 cout << "route unavailable" << endl;
             }
         }
-        catch(NodeNotExistException &e){
+        catch (NodeNotExistException &e) {
             cout << "route unavailable" << endl;
         }
     }
